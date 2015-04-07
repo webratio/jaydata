@@ -1,0 +1,554 @@
+<project name="jaydata" default="all">
+
+	<property name="VERSION" value="1.3.6" />
+	<property name="TARGET_DIR" value="./build" />
+	<property name="RELEASE_DIR" value="./release" />
+	<property name="TEMP_DIR" value="${TARGET_DIR}/tmp" />
+	<property name="MODULE_DIR" value="${TARGET_DIR}/jaydatamodules" />
+	<property name="PROVIDERS_DIR" value="${TARGET_DIR}/jaydataproviders" />
+	<property name="TYPESYSTEM_DIR" value="./TypeSystem" />
+	<property name="TYPES_DIR" value="./Types" />
+	<property name="JAYSVCUTIL_DIR" value="./JaySvcUtil" />
+	<property name="BASEMODULE_DIR" value="./JayDataModules" />
+	<property name="COMPILER" value="./Tools/compiler.jar" />
+	<property name="CREDITS_BASE" value="./CREDITS.txt" />
+
+	<!-- ============================================================= -->
+	<!-- FILE LISTS                                                    -->
+	<!-- ============================================================= -->
+
+	<!-- JayData File Lists -->
+
+	<filelist id="TypeSystemClient.files" dir="${basedir}">
+		<file name="./Scripts/acorn.js" />
+		<file name="${TYPESYSTEM_DIR}/initializeJayDataClient.js" />
+	</filelist>
+
+	<filelist id="TypeSystem.files" dir="${basedir}">
+		<file name="${TYPESYSTEM_DIR}/initializeJayData.js" />
+		<file name="${TYPESYSTEM_DIR}/Exception.js" />
+		<file name="${TYPESYSTEM_DIR}/utils.js" />
+		<file name="${TYPESYSTEM_DIR}/PreHtml5Compatible.js" />
+		<file name="${TYPESYSTEM_DIR}/TypeSystem.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/Types.js" />
+		<file name="${TYPESYSTEM_DIR}/Trace/Trace.js" />
+		<file name="${TYPESYSTEM_DIR}/Trace/Logger.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/Types.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/SimpleBase.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/Geospatial.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/Geography.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/Geometry.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/Guid.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/Blob.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/EdmTypes.js" />
+		<file name="${TYPESYSTEM_DIR}/Types/Converter.js" />
+		<file name="${TYPESYSTEM_DIR}/Extensions.js" />
+	</filelist>
+
+	<filelist id="VSDocSource.files" dir="${basedir}">
+		<file name="${TYPESYSTEM_DIR}/VS2010Intellisense.js" />
+	</filelist>
+
+	<filelist id="JayDataSource.files" dir="${basedir}">
+		<file name="${TYPES_DIR}/Expressions/ExpressionNode2.js" />
+		<file name="${TYPES_DIR}/Expressions/ArrayLiteralExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/CallExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/CodeParser.js" />
+		<file name="${TYPES_DIR}/Expressions/ConstantExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/FunctionExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/ObjectFieldExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/ObjectLiteralExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/PagingExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/ParameterExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/PropertyExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/SimpleBinaryExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/ThisExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/ExpressionVisitor.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/ParameterProcessor.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/GlobalContextProcessor.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/LocalContextProcessor.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/LambdaParameterProcessor.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/ParameterResolverVisitor.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/LogicalSchemaBinderVisitor.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/ExpTreeVisitor.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/SetExecutableVisitor.js" />
+		<file name="${TYPES_DIR}/Expressions/Visitors/ExecutorVisitor.js" />
+		<file name="${TYPES_DIR}/Expressions/ExpressionBuilder.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/AssociationInfoExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/CodeExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/CodeToEntityConverter.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/ComplexTypeExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/EntityContextExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/EntityExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/EntityExpressionVisitor.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/ExpressionMonitor.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/EntityFieldExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/EntityFieldOperationExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/EntitySetExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/FrameOperationExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/FilterExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/IncludeExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/MemberInfoExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/OrderExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/ParametricQueryExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/ProjectionExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/QueryExpressionCreator.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/QueryParameterExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/RepresentationExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/EntityExpressions/ServiceOperationExpression.js" />
+		<file name="${TYPES_DIR}/Expressions/ContinuationExpressionBuilder.js" />
+		<file name="${TYPES_DIR}/Validation/EntityValidationBase.js" />
+		<file name="${TYPES_DIR}/Validation/EntityValidation.js" />
+		<file name="${TYPES_DIR}/Notifications/ChangeDistributorBase.js" />
+		<file name="${TYPES_DIR}/Notifications/ChangeCollectorBase.js" />
+		<file name="${TYPES_DIR}/Notifications/ChangeDistributor.js" />
+		<file name="${TYPES_DIR}/Notifications/ChangeCollector.js" />
+		<file name="${TYPES_DIR}/Transaction.js" />
+		<file name="${TYPES_DIR}/Access.js" />
+		<file name="${TYPES_DIR}/Promise.js" />
+		<file name="${TYPES_DIR}/Entity.js" />
+		<file name="${TYPES_DIR}/EntityContext.js" />
+		<file name="${TYPES_DIR}/QueryProvider.js" />
+		<file name="${TYPES_DIR}/ModelBinder.js" />
+		<file name="${TYPES_DIR}/QueryBuilder.js" />
+		<file name="${TYPES_DIR}/Query.js" />
+		<file name="${TYPES_DIR}/Queryable.js" />
+		<file name="${TYPES_DIR}/EntitySet.js" />
+		<file name="${TYPES_DIR}/EntityState.js" />
+		<file name="${TYPES_DIR}/EntityAttachModes.js" />
+		<file name="${TYPES_DIR}/EntityStateManager.js" />
+		<file name="${TYPES_DIR}/ItemStore.js" />
+		<file name="${TYPES_DIR}/StorageProviderLoader.js" />
+		<file name="${TYPES_DIR}/StorageProviderBase.js" />
+		<file name="${TYPES_DIR}/ServiceOperation.js" />
+		<file name="${TYPES_DIR}/EntityWrapper.js" />
+		<file name="${TYPES_DIR}/Ajax/jQueryAjaxWrapper.js" />
+		<file name="${TYPES_DIR}/Ajax/WinJSAjaxWrapper.js" />
+		<file name="${TYPES_DIR}/Ajax/ExtJSAjaxWrapper.js" />
+		<file name="${TYPES_DIR}/Ajax/AjaxStub.js" />
+		<file name="${TYPES_DIR}/StorageProviders/modelBinderConfigCompiler.js" />
+		<file name="${TYPES_DIR}/Authentication/AuthenticationBase.js" />
+		<file name="${TYPES_DIR}/Authentication/Anonymous.js" />
+		<file name="${TYPES_DIR}/Authentication/FacebookAuth.js" />
+		<file name="${TYPES_DIR}/Authentication/BasicAuth.js" />
+		<file name="${JAYSVCUTIL_DIR}/JaySvcUtil.js" />
+		<file name="${BASEMODULE_DIR}/deferred.js" />
+		<file name="${TYPES_DIR}/JayStorm.js" />
+	</filelist>
+
+	<!-- Providers File Lists -->
+
+	<filelist id="IndexedDbProvider.files" dir="${basedir}">
+		<file name="${TYPES_DIR}/StorageProviders/IndexedDB/IndexedDBConverter.js" />
+		<file name="${TYPES_DIR}/StorageProviders/IndexedDB/IndexedDBStorageProvider.js" />
+	</filelist>
+
+	<filelist id="SqLiteProvider.files" dir="${basedir}">
+		<file name="${TYPES_DIR}/DbClient/DbCommand.js" />
+		<file name="${TYPES_DIR}/DbClient/DbConnection.js" />
+		<file name="${TYPES_DIR}/DbClient/OpenDatabaseClient/OpenDbCommand.js" />
+		<file name="${TYPES_DIR}/DbClient/OpenDatabaseClient/OpenDbConnection.js" />
+		<file name="${TYPES_DIR}/DbClient/JayStorageClient/JayStorageCommand.js" />
+		<file name="${TYPES_DIR}/DbClient/JayStorageClient/JayStorageConnection.js" />
+		<file name="${TYPES_DIR}/DbClient/SqLiteNjClient/SqLiteNjCommand.js" />
+		<file name="${TYPES_DIR}/DbClient/SqLiteNjClient/SqLiteNjConnection.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqLiteConverter.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqLiteStorageProvider.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqLiteCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlPagingCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlOrderCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlProjectionCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlExpressionMonitor.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlFilterCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/ModelBinder/sqLite_ModelBinderCompiler.js" />
+	</filelist>
+
+	<filelist id="oDataProvider.files">
+		<file name="${TYPES_DIR}/StorageProviders/oData/oDataConverter.js" />
+		<file name="${TYPES_DIR}/StorageProviders/oData/oDataProvider.js" />
+		<file name="${TYPES_DIR}/StorageProviders/oData/oDataCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/oData/oDataWhereCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/oData/oDataOrderCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/oData/oDataPagingCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/oData/oDataProjectionCompiler.js" />
+	</filelist>
+
+	<filelist id="FacebookProvider.files">
+		<file name="${TYPES_DIR}/StorageProviders/Facebook/FacebookConverter.js" />
+		<file name="${TYPES_DIR}/StorageProviders/Facebook/FacebookProvider.js" />
+		<file name="${TYPES_DIR}/StorageProviders/Facebook/FacebookCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/Facebook/EntitySets/FQL/user.js" />
+		<file name="${TYPES_DIR}/StorageProviders/Facebook/EntitySets/FQL/friend.js" />
+		<file name="${TYPES_DIR}/StorageProviders/Facebook/EntitySets/FQL/page.js" />
+		<file name="${TYPES_DIR}/StorageProviders/Facebook/EntitySets/FQLContext.js" />
+	</filelist>
+
+	<filelist id="YQLProvider.files">
+		<file name="${TYPES_DIR}/StorageProviders/YQL/YQLConverter.js" />
+		<file name="${TYPES_DIR}/StorageProviders/YQL/YQLProvider.js" />
+		<file name="${TYPES_DIR}/StorageProviders/YQL/YQLCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/YQL/EntitySets/geo.js" />
+		<file name="${TYPES_DIR}/StorageProviders/YQL/EntitySets/YQLContext.js" />
+	</filelist>
+
+	<filelist id="InMemoryProvider.files">
+		<file name="${TYPES_DIR}/StorageProviders/InMemory/InMemoryConverter.js" />
+		<file name="${TYPES_DIR}/StorageProviders/InMemory/InMemoryProvider.js" />
+		<file name="${TYPES_DIR}/StorageProviders/InMemory/InMemoryCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/InMemory/InMemoryFunctionCompiler.js" />
+	</filelist>
+
+	<filelist id="MongoDbProvider.files">
+		<file name="${TYPES_DIR}/StorageProviders/InMemory/InMemoryConverter.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/mongoDBConverter.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/mongoDBModelBinderConfigCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/mongoDBProjectionCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/mongoDBFilterCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/mongoDBOrderCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/mongoDBPagingCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/mongoDBFunctionCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/mongoDBCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/mongoDBStorageProvider.js" />
+		<file name="${TYPES_DIR}/StorageProviders/mongoDB/ClientObjectID.js" />
+	</filelist>
+
+	<filelist id="StormProvider.files">
+		<file name="${TYPES_DIR}/StorageProviders/Storm/StormStorageProvider.js" />
+	</filelist>
+
+	<filelist id="WebApiProvider.files">
+		<file name="${TYPES_DIR}/StorageProviders/WebApi/WebApiConverter.js" />
+		<file name="${TYPES_DIR}/StorageProviders/WebApi/WebApiProvider.js" />
+	</filelist>
+
+	<!-- Modules File Lists -->
+
+	<filelist id="DeferredModule.files">
+		<file name="${BASEMODULE_DIR}/deferred.js" />
+	</filelist>
+
+	<filelist id="ErrorHandlerModule.files">
+		<file name="${BASEMODULE_DIR}/errorhandler.js" />
+	</filelist>
+
+	<filelist id="FormBinderModule.files">
+		<file name="${BASEMODULE_DIR}/formBinder.js" />
+	</filelist>
+
+	<filelist id="HandlebarsModule.files">
+		<file name="${BASEMODULE_DIR}/handlebars.js" />
+	</filelist>
+
+	<filelist id="InMemoryModule.files">
+		<file name="${BASEMODULE_DIR}/inMemory.js" />
+	</filelist>
+
+	<filelist id="KendoModule.files">
+		<file name="${BASEMODULE_DIR}/kendo.js" />
+	</filelist>
+
+	<filelist id="KnockoutModule.files">
+		<file name="${BASEMODULE_DIR}/knockout.js" />
+	</filelist>
+
+	<filelist id="QDeferredModule.files">
+		<file name="${BASEMODULE_DIR}/qDeferred.js" />
+	</filelist>
+
+	<filelist id="SenchaModule.files">
+		<file name="${BASEMODULE_DIR}/sencha.js" />
+	</filelist>
+
+	<filelist id="TemplateModule.files">
+		<file name="${BASEMODULE_DIR}/template.js" />
+	</filelist>
+
+	<filelist id="ValidateModule.files">
+		<file name="${BASEMODULE_DIR}/validate.js" />
+	</filelist>
+
+	<filelist id="MsCrmModule.files">
+		<file name="${BASEMODULE_DIR}/jaydata.mscrm.js" />
+	</filelist>
+
+	<filelist id="MsCrmServerModule.files">
+		<file name="${BASEMODULE_DIR}/jaydata.mscrm.server.js" />
+	</filelist>
+
+	<filelist id="AngularModule.files">
+		<file name="${BASEMODULE_DIR}/angular.js" />
+	</filelist>
+
+	<!-- ============================================================= -->
+	<!-- BUILDING                                                      -->
+	<!-- ============================================================= -->
+
+	<!-- Utility -->
+
+	<macrodef name="minifyjs">
+		<attribute name="file" />
+		<attribute name="tofile" />
+		<sequential>
+			<java jar="${COMPILER}" fork="true" failonerror="true">
+				<arg value="--js" />
+				<arg path="@{file}" />
+				<arg value="--js_output_file" />
+				<arg path="@{tofile}" />
+			</java>
+		</sequential>
+	</macrodef>
+
+	<target name="init">
+		<delete dir="${TARGET_DIR}" />
+		<mkdir dir="${TARGET_DIR}" />
+		<delete dir="${TEMP_DIR}" />
+		<mkdir dir="${TEMP_DIR}" />
+		<delete dir="${MODULE_DIR}" />
+		<mkdir dir="${MODULE_DIR}" />
+		<delete dir="${PROVIDERS_DIR}" />
+		<mkdir dir="${PROVIDERS_DIR}" />
+	</target>
+
+	<target name="credits" depends="init">
+		<echo>Create CREDITS.txt file</echo>
+		<copy file="${CREDITS_BASE}" tofile="${TEMP_DIR}/CREDITS.txt" />
+		<replaceregexp file="${TEMP_DIR}/CREDITS.txt" byline="true">
+			<regexp pattern="JayData [0-9]\.[0-9]\.[0-9]" />
+			<substitution expression="JayData ${VERSION}" />
+		</replaceregexp>
+	</target>
+
+	<!-- Providers Building -->
+
+	<macrodef name="buildprovider">
+		<attribute name="name" />
+		<attribute name="sourcefiles" />
+		<sequential>
+			<echo>Building @{name} provider...</echo>
+			<concat destfile="${PROVIDERS_DIR}/@{name}.js">
+				<filelist>
+					<file name="${TEMP_DIR}/CREDITS.txt" />
+				</filelist>
+				<filelist refid="@{sourcefiles}" />
+			</concat>
+			<minifyjs file="${PROVIDERS_DIR}/@{name}.js" tofile="${TEMP_DIR}/@{name}.min.js" />
+			<concat destfile="${PROVIDERS_DIR}/@{name}.min.js">
+				<filelist>
+					<file name="${TEMP_DIR}/CREDITS.txt" />
+					<file name="${TEMP_DIR}/@{name}.min.js" />
+				</filelist>
+			</concat>
+		</sequential>
+	</macrodef>
+
+	<target name="indexeddbprovider" depends="init,credits">
+		<buildprovider name="IndexedDbProvider" sourcefiles="IndexedDbProvider.files" />
+	</target>
+
+	<target name="sqliteprovider" depends="init,credits">
+		<buildprovider name="SqLiteProvider" sourcefiles="SqLiteProvider.files" />
+	</target>
+
+	<target name="odataprovider" depends="init,credits">
+		<buildprovider name="oDataProvider" sourcefiles="oDataProvider.files" />
+	</target>
+
+	<target name="facebookprovider" depends="init,credits">
+		<buildprovider name="FacebookProvider" sourcefiles="FacebookProvider.files" />
+	</target>
+
+	<target name="yqlprovider" depends="init,credits">
+		<buildprovider name="YQLProvider" sourcefiles="YQLProvider.files" />
+	</target>
+
+	<target name="inmemoryprovider" depends="init,credits">
+		<buildprovider name="InMemoryProvider" sourcefiles="InMemoryProvider.files" />
+	</target>
+
+	<target name="mongodbprovider" depends="init,credits">
+		<buildprovider name="MongoDbProvider" sourcefiles="MongoDbProvider.files" />
+	</target>
+
+	<target name="stormprovider" depends="init,credits">
+		<buildprovider name="StormProvider" sourcefiles="StormProvider.files" />
+	</target>
+
+	<target name="webapiprovider" depends="init,credits">
+		<buildprovider name="WebApiProvider" sourcefiles="WebApiProvider.files" />
+	</target>
+
+	<target name="providers" depends="indexeddbprovider,sqliteprovider,odataprovider,facebookprovider,yqlprovider,inmemoryprovider,mongodbprovider,stormprovider,webapiprovider">
+	</target>
+
+	<!-- JayData Modules Building -->
+
+	<macrodef name="buildmodule">
+		<attribute name="name" />
+		<attribute name="sourcefiles" />
+		<sequential>
+			<echo>Building @{name} module...</echo>
+			<concat destfile="${MODULE_DIR}/@{name}.js">
+				<filelist>
+					<file name="${TEMP_DIR}/CREDITS.txt" />
+				</filelist>
+				<filelist refid="@{sourcefiles}" />
+			</concat>
+			<minifyjs file="${MODULE_DIR}/@{name}.js" tofile="${TEMP_DIR}/@{name}.min.js" />
+			<concat destfile="${MODULE_DIR}/@{name}.min.js">
+				<filelist>
+					<file name="${TEMP_DIR}/CREDITS.txt" />
+					<file name="${TEMP_DIR}/@{name}.min.js" />
+				</filelist>
+			</concat>
+		</sequential>
+	</macrodef>
+
+	<target name="deferredmodule" depends="init,credits">
+		<buildmodule name="deferred" sourcefiles="DeferredModule.files" />
+	</target>
+
+	<target name="errorhandlermodule" depends="init,credits">
+		<buildmodule name="errorhandler" sourcefiles="ErrorHandlerModule.files" />
+	</target>
+
+	<target name="formbindermodule" depends="init,credits">
+		<buildmodule name="formBinder" sourcefiles="FormBinderModule.files" />
+	</target>
+
+	<target name="handlebarsmodule" depends="init,credits">
+		<buildmodule name="handlebars" sourcefiles="HandlebarsModule.files" />
+	</target>
+
+	<target name="inmemorymodule" depends="init,credits">
+		<buildmodule name="inMemory" sourcefiles="InMemoryModule.files" />
+	</target>
+
+	<target name="kendomodule" depends="init,credits">
+		<buildmodule name="kendo" sourcefiles="KendoModule.files" />
+	</target>
+
+	<target name="knockoutmodule" depends="init,credits">
+		<buildmodule name="knockout" sourcefiles="KnockoutModule.files" />
+	</target>
+
+	<target name="qdeferredmodule" depends="init,credits">
+		<buildmodule name="qDeferred" sourcefiles="QDeferredModule.files" />
+	</target>
+
+	<target name="senchamodule" depends="init,credits">
+		<buildmodule name="sencha" sourcefiles="SenchaModule.files" />
+	</target>
+
+	<target name="templatemodule" depends="init,credits">
+		<buildmodule name="template" sourcefiles="TemplateModule.files" />
+	</target>
+
+	<target name="validatemodule" depends="init,credits">
+		<buildmodule name="validate" sourcefiles="ValidateModule.files" />
+	</target>
+
+	<target name="mscrmmodule" depends="init,credits">
+		<buildmodule name="jaydata.mscrm" sourcefiles="MsCrmModule.files" />
+	</target>
+
+	<target name="mscrmservermodule" depends="init,credits">
+		<buildmodule name="jaydata.mscrm.server" sourcefiles="MsCrmServerModule.files" />
+	</target>
+
+	<target name="angularmodule" depends="init,credits">
+		<buildmodule name="angular" sourcefiles="AngularModule.files" />
+	</target>
+
+	<target name="jaydatamodules" depends="deferredmodule,errorhandlermodule,formbindermodule,handlebarsmodule,inmemorymodule,kendomodule,knockoutmodule,qdeferredmodule,senchamodule,templatemodule,validatemodule,mscrmmodule,mscrmservermodule,angularmodule">
+	</target>
+
+	<!-- JayData Building -->
+
+	<target name="jaydata" depends="init,credits">
+		<echo>Building JayData type system...</echo>
+		<concat destfile="${TEMP_DIR}/TypeSystems.js">
+			<filelist refid="TypeSystemClient.files" />
+			<filelist refid="TypeSystem.files" />
+		</concat>
+		<replaceregexp file="${TEMP_DIR}/TypeSystems.js" byline="true">
+			<regexp pattern="\$data.version = &quot;JayData [0-9]\.[0-9]\.[0-9]&quot;" />
+			<substitution expression="$data.version = &quot;JayData ${VERSION}&quot;" />
+		</replaceregexp>
+		<replaceregexp file="${TEMP_DIR}/TypeSystems.js" byline="true">
+			<regexp pattern="\$data.versionNumber = &quot;[0-9]\.[0-9]\.[0-9]&quot;" />
+			<substitution expression="$data.versionNumber = &quot;${VERSION}&quot;" />
+		</replaceregexp>
+
+		<echo>Building JayData library...</echo>
+		<concat destfile="${TEMP_DIR}/jaydata.js">
+			<filelist>
+				<file name="${TEMP_DIR}/TypeSystems.js" />
+			</filelist>
+			<filelist refid="JayDataSource.files" />
+		</concat>
+		<concat destfile="${TARGET_DIR}/jaydata.js">
+			<filelist>
+				<file name="${TEMP_DIR}/CREDITS.txt" />
+				<file name="${TEMP_DIR}/jaydata.js" />
+			</filelist>
+		</concat>
+	</target>
+
+	<target name="jaydatamin" depends="init,jaydata,credits">
+		<echo>Minifying JayData library...</echo>
+		<minifyjs file="${TARGET_DIR}/jaydata.js" tofile="${TEMP_DIR}/jaydata.min.js" />
+		<concat destfile="${TARGET_DIR}/jaydata.min.js">
+			<filelist>
+				<file name="${TEMP_DIR}/CREDITS.txt" />
+				<file name="${TEMP_DIR}/jaydata.min.js" />
+			</filelist>
+		</concat>
+	</target>
+
+	<target name="jaydatavsdoc" depends="init,jaydata,credits">
+		<echo>Building JayData vsdoc version..</echo>
+		<concat destfile="${TARGET_DIR}/jaydata-vsdoc.js">
+			<filelist>
+				<file name="${TEMP_DIR}/CREDITS.txt" />
+			</filelist>
+			<filelist refid="VSDocSource.files" />
+			<filelist>
+				<file name="${TEMP_DIR}/jaydata.js" />
+			</filelist>
+		</concat>
+	</target>
+
+	<!-- ============================================================= -->
+	<!-- TOP-LEVEL TARGETS                                             -->
+	<!-- ============================================================= -->
+
+	<target name="clean" description="Cleans the output directories">
+		<delete dir="${TARGET_DIR}" />
+		<delete dir="${RELEASE_DIR}" />
+	</target>
+
+	<target name="modules" depends="jaydatamodules" description="Build only the extra modules">
+		<delete dir="${TEMP_DIR}" />
+	</target>
+
+	<target name="release" depends="all" description="Prepares the full JayData release directory">
+		<echo>Creating release folder...</echo>
+		<mkdir dir="${RELEASE_DIR}" />
+		<mkdir dir="${RELEASE_DIR}/jaydatamodules" />
+		<mkdir dir="${RELEASE_DIR}/jaydataproviders" />
+		<copy todir="${RELEASE_DIR}/jaydatamodules">
+			<fileset dir="${MODULE_DIR}" includes="**" />
+		</copy>
+		<copy todir="${RELEASE_DIR}/jaydataproviders">
+			<fileset dir="${PROVIDERS_DIR}" includes="**" />
+		</copy>
+		<copy file="${TARGET_DIR}/jaydata.js" todir="${RELEASE_DIR}" />
+		<copy file="${TARGET_DIR}/jaydata.min.js" todir="${RELEASE_DIR}" />
+		<copy file="${TARGET_DIR}/jaydata-vsdoc.js" todir="${RELEASE_DIR}" />
+	</target>
+
+	<target name="all" depends="jaydatamodules,providers,jaydata,jaydatamin,jaydatavsdoc" description="Builds the JayData main library and all extra modules">
+		<delete dir="${TEMP_DIR}" />
+	</target>
+
+</project>
