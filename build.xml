@@ -1,8 +1,8 @@
 <project name="jaydata" default="all">
 
 	<property name="VERSION" value="1.3.6" />
-	<property name="TARGET_DIR" value="./build" />
-	<property name="RELEASE_DIR" value="./release" />
+	<property name="TARGET_DIR" value="./#build" />
+	<property name="RELEASE_DIR" value="./#release" />
 	<property name="TEMP_DIR" value="${TARGET_DIR}/tmp" />
 	<property name="MODULE_DIR" value="${TARGET_DIR}/jaydatamodules" />
 	<property name="PROVIDERS_DIR" value="${TARGET_DIR}/jaydataproviders" />

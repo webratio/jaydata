@@ -7,7 +7,6 @@ CommandLine.dll
 JayData_readme.txt
 JaySvcUtil.exe
 Scripts/jaydata*
-build
 /obj/*
 /3rdparty/*
 /bin/*
@@ -19,3 +18,5 @@ build
 !bin/System.Web.Providers.dll
 !bin/WebGrease.dll
 
+/#build/
+/#release/
