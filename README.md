@@ -1,6 +1,6 @@
 WebRatio JayData
 ================
-JayData is a unified data access library for JavaScript to CRUD data from different sources like WebSQL/SQLite, 
+WebRatio JayData is a unified data access library for JavaScript to CRUD data from different sources like WebSQL/SQLite, 
 IndexedDB, MongoDb, ASP.NET WebAPI, OData, HTML5 localStorage, Facebook or YQL. 
 The library can be integrated with KendoUI, Knockout.js, Handlebars.js or Sencha Touch 2 and can be used on 
 Node.js as well.
@@ -17,9 +17,8 @@ on iPhone, iPad and Android) and cross-layer as it works on client-side and serv
 
 Please read the release notes for current status of the providers.
 
+WebRatio JayData is a fork of the [JayData](https://github.com/jaydata/jaydata) library.
 Visit http://jaydata.org for detailed information and documentation.
 
 JayData comes with multiple licensing: you can use it under MIT license if ship software software under MIT, 
-but it should be used under GPL if you distribute your software under GPLv2. JayData Pro is a closed-source 
-commercial product recommended for enterprise projects and commercial development efforts. 
-http://jaystack.com/licensing
+but it should be used under GPL if you distribute your software under GPLv2.
