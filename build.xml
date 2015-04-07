@@ -313,7 +313,7 @@
 		<echo>Create CREDITS.txt file</echo>
 		<copy file="${CREDITS_BASE}" tofile="${TEMP_DIR}/CREDITS.txt" />
 		<replaceregexp file="${TEMP_DIR}/CREDITS.txt" byline="true">
-			<regexp pattern="JayData [0-9]\.[0-9]\.[0-9]" />
+			<regexp pattern="JayData [0-9]\.[0-9]\.[0-9](?:\.[0-9])?" />
 			<substitution expression="JayData ${VERSION}" />
 		</replaceregexp>
 	</target>
@@ -471,11 +471,11 @@
 			<filelist refid="TypeSystem.files" />
 		</concat>
 		<replaceregexp file="${TEMP_DIR}/TypeSystems.js" byline="true">
-			<regexp pattern="\$data.version = &quot;JayData [0-9]\.[0-9]\.[0-9]&quot;" />
+			<regexp pattern="\$data.version = &quot;JayData [0-9]\.[0-9]\.[0-9](?:\.[0-9])?&quot;" />
 			<substitution expression="$data.version = &quot;JayData ${VERSION}&quot;" />
 		</replaceregexp>
 		<replaceregexp file="${TEMP_DIR}/TypeSystems.js" byline="true">
-			<regexp pattern="\$data.versionNumber = &quot;[0-9]\.[0-9]\.[0-9]&quot;" />
+			<regexp pattern="\$data.versionNumber = &quot;[0-9]\.[0-9]\.[0-9](?:\.[0-9])?&quot;" />
 			<substitution expression="$data.versionNumber = &quot;${VERSION}&quot;" />
 		</replaceregexp>
 
