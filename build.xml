@@ -162,6 +162,7 @@
 		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlExpressionMonitor.js" />
 		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlFilterCompiler.js" />
 		<file name="${TYPES_DIR}/StorageProviders/SqLite/ModelBinder/sqLite_ModelBinderCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/WebSqlWrapper.js" />
 	</filelist>
 
 	<filelist id="oDataProvider.files">
