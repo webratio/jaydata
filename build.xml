@@ -155,6 +155,7 @@
 		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqLiteConverter.js" />
 		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqLiteStorageProvider.js" />
 		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqLiteCompiler.js" />
+		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqLiteTransaction.js" />
 		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlPagingCompiler.js" />
 		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlOrderCompiler.js" />
 		<file name="${TYPES_DIR}/StorageProviders/SqLite/SqlProjectionCompiler.js" />

@@ -238,6 +238,34 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
             error: callBack.error
         });
     },
+    
+    _beginTran: function(tables, isWrite, callBack) {
+        var thisStorage = this;
+        var callBackSettings = $data.typeSystem.createCallbackSetting(callBack);
+        
+        thisStorage._createSqlConnection();
+        var tx = new $data.sqLite.SqLiteTransaction;
+        
+        setTimeout(function() {
+            thisStorage.connection.open({
+                error: function(source) {
+                    if (tx.onerror) {
+                        tx.onerror.fire(source, tx);
+                    }
+                },
+                success: function(source) {
+                    tx.transaction = source;
+                    callBackSettings.success(tx);
+                },
+                oncomplete: function() {
+                    if (tx.oncomplete) {
+                        tx.oncomplete.fire(arguments, tx);
+                    }
+                }
+            }, undefined, isWrite);
+        }, 0);
+    },
+    
     executeQuery: function (query, callBack) {
         callBack = $data.typeSystem.createCallbackSetting(callBack);
         var sqlConnection = this._createSqlConnection();
@@ -255,7 +283,7 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
                 }
             },
             error: callBack.error
-        });
+        }, query.transaction, false);
     },
     _compile: function (query, params) {
         var compiler = new $data.storageProviders.sqLite.SQLiteCompiler();
@@ -268,13 +296,13 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
         var sqlText = this._compile(query);
         return sqlText;
     },
-    _runSqlCommands: function (sqlConnection, callBack) {
+    _runSqlCommands: function (sqlConnection, callBack, tx, isWrite) {
         if (this.SqlCommands && this.SqlCommands.length > 0) {
             var cmdStr = this.SqlCommands.pop();
             var command = sqlConnection.createCommand(cmdStr, null);
             var that = this;
-            var okFn = function (result) { that._runSqlCommands.apply(that, [sqlConnection, callBack]); };
-            command.executeQuery({ success: okFn, error: callBack.error });
+            var okFn = function (result) { that._runSqlCommands.apply(that, [sqlConnection, callBack, tx, isWrite]); };
+            command.executeQuery({ success: okFn, error: callBack.error }, tx, isWrite);
         } else {
             callBack.success(this.context);
         }
@@ -282,13 +310,34 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
     setContext: function (ctx) {
         this.context = ctx;
     },
-    saveChanges: function (callback, changedItems) {
+    saveChanges: function (callback, changedItems, tx) {
+        
+        //var sqlConnection = this._createSqlConnection();
+        //var provider = this;
+        //var independentBlocks = this.buildIndependentBlocks(changedItems);
+        //this.saveIndependentBlocks(changedItems, independentBlocks, sqlConnection, callback);
         var sqlConnection = this._createSqlConnection();
-        var provider = this;
         var independentBlocks = this.buildIndependentBlocks(changedItems);
-        this.saveIndependentBlocks(changedItems, independentBlocks, sqlConnection, callback);
+        
+        var errorHandler = function(source, eventData) {
+            tx.onerror.detach(errorHandler);
+            callback.error.call(this, eventData);
+        };
+        tx.onerror.attach(errorHandler);
+        
+        this.saveIndependentBlocks(changedItems, independentBlocks, sqlConnection, {
+            success: function() {
+                tx.onerror.detach(errorHandler);
+                callback.success.apply(this, arguments);
+            },
+            error: function() {
+                tx.onerror.detach(errorHandler);
+                callback.error.apply(this, arguments);
+            }
+        }, tx);
+        
     },
-    saveIndependentBlocks: function (changedItems, independentBlocks, sqlConnection, callback) {
+    saveIndependentBlocks: function (changedItems, independentBlocks, sqlConnection, callback, tx) {
         /// <summary>
         /// Saves the sequentially independent items to the database.
         /// </summary>
@@ -297,9 +346,9 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
         /// <param name="callback">Callback on finish</param>
         var provider = this;
         var t = [].concat(independentBlocks);
-        function saveNextIndependentBlock() {
+        function saveNextIndependentBlock(tx) {
             if (t.length === 0) {
-                callback.success();
+                callback.success(tx);
                 return;
             }
             var currentBlock = t.shift();
@@ -311,28 +360,28 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
             }, this);
             try {
                 provider.saveIndependentItems(convertedItems, sqlConnection, {
-                    success: function () {
+                    success: function (results, tx) {
                         provider.postProcessItems(convertedItems);
-                        saveNextIndependentBlock();
+                        saveNextIndependentBlock(tx);
                     },
                     error: callback.error
-                });
+                }, tx);
             } catch (e) {
-                callback.error(e);
+                callback.error(e, tx);
             }
             
         }
-        saveNextIndependentBlock();
+        saveNextIndependentBlock(tx);
     },
 
-    saveIndependentItems: function (items, sqlConnection, callback) {
+    saveIndependentItems: function (items, sqlConnection, callback, tx) {
         var provider = this;
         var queries = items.map(function (item) {
             return provider.saveEntitySet(item);
         });
         queries = queries.filter(function (item) { return item; });
         if (queries.length === 0) {
-            callback.success(items);
+            callback.success(items, tx);
             return;
         }
         function toCmd(sqlConnection, queries) {
@@ -349,7 +398,7 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
         }
         var cmd = toCmd(sqlConnection, queries);
         cmd.executeQuery({
-            success: function (results) {
+            success: function (results, tx) {
                 var reloadQueries = results.map(function (result, i) {
                     if (result && result.insertId) {
                         return provider.save_reloadSavedEntity(result.insertId, items[i].entitySet.tableName, sqlConnection);
@@ -359,20 +408,20 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
                 })
                 var cmd = toCmd(sqlConnection, reloadQueries);
                 if (cmd.query.length > 0) {
-                    cmd.executeQuery(function (results) {
+                    cmd.executeQuery(function (results, tx) {
                         results.forEach(function (item, i) {
                             if (item && item.rows) {
                                 items[i].physicalData.initData = item.rows[0];
                             }
                         });
-                        callback.success(items);
-                    });
+                        callback.success(items, tx);
+                    }, tx, true);
                 } else {
-                    callback.success(0);//TODO Zenima: fixed this!
+                    callback.success(0, tx);//TODO Zenima: fixed this!
                 }
             },
             error: callback.error
-        });
+        }, tx, true);
     },
     postProcessItems: function (changedItems) {
         var pmpCache = {};
