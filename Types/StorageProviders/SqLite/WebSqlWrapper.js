@@ -26,7 +26,8 @@
             queuedQueries: [],
             pollerRunning: false,
             keepAlive: false,
-            yieldTimer: null
+            yieldTimer: null,
+            yielding: false
         };
     };
     
@@ -162,17 +163,19 @@
     
     function doYield(context, backoffTime) {
         var dbContext = context.dbContext;
-        if (!context.canYield || dbContext.requestedTxs <= 0) {
+        if (context.yielding || (!context.canYield || dbContext.requestedTxs <= 0)) {
             //console.log("Yield not necessary");
             return;
         }
         
         //console.log("Yielding, others", dbContext.requestedTxs, "backing off for", backoffTime);
         context.realTx = null;
+        context.yielding = true;
         stopPoller(context);
         window.setTimeout(function() {
             constructTransaction(context, function() {
                 //console.log("Returned after yielding");
+                context.yielding = false;
             });
         }, backoffTime || 0);
     }
@@ -205,14 +208,15 @@
             //console.log("Poller stopped");
             return;
         }
-        tx.executeSql("SELECT name FROM sqlite_master LIMIT 1", [], function(innerTx, resultSet) {
+        tx.executeSql("SELECT '$polling'", [], function(innerTx, resultSet) {
             context.callbackDepth++;
             try {
                 executeQueuedQueries(context);
-                executePoller(context); // recurse async
             } finally {
                 context.callbackDepth--;
+                handleCallbackTermination(context);
             }
+            executePoller(context); // recurse async
         }, function(innerTx, error) {
             console.error("Poller failed");
         });
