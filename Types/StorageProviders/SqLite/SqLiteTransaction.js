@@ -14,5 +14,8 @@ $data.Class.define("$data.sqLite.SqLiteTransaction", $data.Transaction, null, {
     },
     release: function() {
         this.transaction.release();
+    },
+    retrieveTransaction: function() {
+        return this.transaction;
     }
 }, null);
