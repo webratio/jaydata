@@ -45,7 +45,7 @@ $C('$data.sqLite.SqlFilterCompiler', $data.Expressions.EntityExpressionVisitor, 
                         });
                         sqlBuilder.addText(SqlStatementBlocks.endGroup);
                     } else if (set instanceof $data.Queryable) {
-                        sqlBuilder.addText("(SELECT d FROM (" + set.toTraceString().sqlText + "))");
+                        sqlBuilder.addText("(SELECT d FROM ([" + set.toTraceString().sqlText + "]))");
                         //Guard.raise("Not yet... but coming!");
                     } else {
                         Guard.raise(new Exception("Only constant arrays and Queryables can be on the right side of 'in' operator", "UnsupportedType"));
@@ -108,7 +108,7 @@ $C('$data.sqLite.SqlFilterCompiler', $data.Expressions.EntityExpressionVisitor, 
         /// <param name="expression" type="$data.Expressions.MemberInfoExpression"></param>
         /// <param name="sqlBuilder" type="$data.sqLite.SqlBuilder"></param>
 
-        sqlBuilder.addText(expression.memberName);
+        sqlBuilder.addText("[" + expression.memberName + "]");
     },
     VisitQueryParameterExpression: function (expression, sqlBuilder) {
         var value = null;

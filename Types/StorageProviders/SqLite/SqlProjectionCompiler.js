@@ -11,22 +11,22 @@ $C('$data.sqLite.SqlProjectionCompiler', $data.Expressions.EntityExpressionVisit
     VisitParametricQueryExpression: function (expression, sqlBuilder) {
         if (expression.expression instanceof $data.Expressions.EntityExpression) {
             this.VisitEntitySetExpression(sqlBuilder.sets[0], sqlBuilder);
-            sqlBuilder.addText("rowid AS " + this.anonymFiledPrefix + SqlStatementBlocks.rowIdName + ", ");
+            sqlBuilder.addText("[rowid] AS " + this.anonymFiledPrefix + SqlStatementBlocks.rowIdName + ", ");
             this.VisitEntityExpressionAsProjection(expression, sqlBuilder);
         }
         else if (expression.expression instanceof $data.Expressions.EntitySetExpression) {
             this.VisitEntitySetExpression(sqlBuilder.sets[0], sqlBuilder);
-            sqlBuilder.addText("rowid AS " + this.anonymFiledPrefix + SqlStatementBlocks.rowIdName + ", ");
+            sqlBuilder.addText("[rowid] AS " + this.anonymFiledPrefix + SqlStatementBlocks.rowIdName + ", ");
             this.anonymFiledPrefix = sqlBuilder.getExpressionAlias(expression.expression) + '__'
             this.MappedFullEntitySet(expression.expression, sqlBuilder);
         }
         else if (expression.expression instanceof $data.Expressions.ObjectLiteralExpression) {
             this.VisitEntitySetExpression(sqlBuilder.sets[0], sqlBuilder);
-            sqlBuilder.addText("rowid AS " + this.anonymFiledPrefix + SqlStatementBlocks.rowIdName + ", ");
+            sqlBuilder.addText("[rowid] AS " + this.anonymFiledPrefix + SqlStatementBlocks.rowIdName + ", ");
             this.Visit(expression.expression, sqlBuilder);
         } else {
             this.VisitEntitySetExpression(sqlBuilder.sets[0], sqlBuilder);
-            sqlBuilder.addText("rowid");
+            sqlBuilder.addText("[rowid]");
             sqlBuilder.addText(SqlStatementBlocks.as);
             sqlBuilder.addText(SqlStatementBlocks.rowIdName);
             sqlBuilder.addText(', ');
@@ -180,7 +180,7 @@ $C('$data.sqLite.SqlProjectionCompiler', $data.Expressions.EntityExpressionVisit
     VisitMemberInfoExpression: function (expression, sqlBuilder) {
         /// <param name="expression" type="$data.Expressions.MemberInfoExpression"></param>
         /// <param name="sqlBuilder" type="$data.sqLite.SqlBuilder"></param>
-        sqlBuilder.addText(expression.memberName);
+        sqlBuilder.addText("[" + expression.memberName + "]");
     },
 
     VisitObjectLiteralExpression: function (expression, sqlBuilder) {
@@ -235,7 +235,7 @@ $C('$data.sqLite.SqlProjectionCompiler', $data.Expressions.EntityExpressionVisit
 
             if (!(expression.expression instanceof $data.Expressions.ObjectLiteralExpression) && !(expression.expression instanceof $data.Expressions.ComplexTypeExpression) && !(expression.expression instanceof $data.Expressions.EntitySetExpression)) {
                 sqlBuilder.addText(SqlStatementBlocks.as);
-                sqlBuilder.addText(this.anonymFiledPrefix + expression.fieldName);
+                sqlBuilder.addText(this.anonymFiledPrefix + "[" + expression.fieldName + "]");
             }
         }
         this.currentObjectLiteralName = tempObjectLiteralName;

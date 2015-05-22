@@ -131,7 +131,7 @@ $C('$data.sqLite.SqlCompiler', $data.Expressions.EntityExpressionVisitor, null, 
             }
 
             var alias = sqlBuilder.getExpressionAlias(es);
-            sqlBuilder.addText(es.instance.tableName + ' ');
+            sqlBuilder.addText("[" + es.instance.tableName + '] ');
             sqlBuilder.addText(alias);
 
             if (setIndex > 0) {
@@ -148,9 +148,9 @@ $C('$data.sqLite.SqlCompiler', $data.Expressions.EntityExpressionVisitor, null, 
                     if(index > 0){
                         sqlBuilder.addText(" AND ");
                     }
-                    sqlBuilder.addText(fromPrefix + "." + constrain[toSet.Association.associationInfo.From]);
+                    sqlBuilder.addText(fromPrefix + ".[" + constrain[toSet.Association.associationInfo.From] +"]");
                     sqlBuilder.addText(" = ");
-                    sqlBuilder.addText(toPrefix + "." + constrain[toSet.Association.associationInfo.To]);
+                    sqlBuilder.addText(toPrefix + ".[" + constrain[toSet.Association.associationInfo.To]+"]");
                 }, this);
                 sqlBuilder.addText(")");
             }
@@ -170,7 +170,7 @@ $C('$data.sqLite.SqlCompiler', $data.Expressions.EntityExpressionVisitor, null, 
                             sqlBuilder.addText(SqlStatementBlocks.valueSeparator);
                         }
                         sqlBuilder.addText(alias + ".");
-                        sqlBuilder.addText(memberDef.name);
+                        sqlBuilder.addText("[" + memberDef.name + "]");
                         if (needAlias) {
                             sqlBuilder.addText(SqlStatementBlocks.as);
                             sqlBuilder.addText(alias + "__" + memberDef.name);
@@ -215,9 +215,9 @@ $C('$data.storageProviders.sqLite.SQLiteCompiler', null, null, {
                 }
                 else {
                     var origSelector = expression.selector.value;
-                    Container.createCodeExpression("function(it){return it." + origSelector + ";}", null);
+                    Container.createCodeExpression("function(it){return it[" + origSelector + "];}", null);
 
-                    var jsCodeTree = Container.createCodeParser(this.backupEntitySetExpression.source.instance).createExpression("function(it){return it." + origSelector + ";}");
+                    var jsCodeTree = Container.createCodeParser(this.backupEntitySetExpression.source.instance).createExpression("function(it){return it[" + origSelector + "];}");
                     var code2entity = Container.createCodeToEntityConverter(this.backupEntitySetExpression.source.instance);
                     var includeSelector = code2entity.Visit(jsCodeTree, { queryParameters: undefined, lambdaParameters: [this.backupEntitySetExpression] });
 

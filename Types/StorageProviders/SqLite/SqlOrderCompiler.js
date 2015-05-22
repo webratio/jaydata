@@ -29,7 +29,7 @@ $C('$data.sqLite.SqlOrderCompiler', $data.Expressions.EntityExpressionVisitor, n
         this.Visit(expression.selector, sqlBuilder);
     },
     VisitMemberInfoExpression: function (expression, sqlBuilder) {
-        sqlBuilder.addText(expression.memberName);
+        sqlBuilder.addText("[" + expression.memberName + "]");
     },
     VisitComplexTypeExpression: function (expression, sqlBuilder) { 
         this.Visit(expression.source, sqlBuilder);
