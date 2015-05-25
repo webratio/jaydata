@@ -214,10 +214,14 @@ $C('$data.storageProviders.sqLite.SQLiteCompiler', null, null, {
                     result = expression.source;
                 }
                 else {
-                    var origSelector = expression.selector.value;
-                    Container.createCodeExpression("function(it){return it[" + origSelector + "];}", null);
-
-                    var jsCodeTree = Container.createCodeParser(this.backupEntitySetExpression.source.instance).createExpression("function(it){return it[" + origSelector + "];}");
+                    var origSelectors = expression.selector.value;
+                    var expressionString = "function(it){return it";
+                    origSelectors.split(".").forEach(function(origSelector) {
+                        expressionString += "["+ origSelector +"]";
+                    });
+                    expressionString += ";}";
+                    Container.createCodeExpression(expressionString, null);
+                    var jsCodeTree = Container.createCodeParser(this.backupEntitySetExpression.source.instance).createExpression(expressionString);
                     var code2entity = Container.createCodeToEntityConverter(this.backupEntitySetExpression.source.instance);
                     var includeSelector = code2entity.Visit(jsCodeTree, { queryParameters: undefined, lambdaParameters: [this.backupEntitySetExpression] });
 
