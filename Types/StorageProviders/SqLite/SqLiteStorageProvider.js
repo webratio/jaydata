@@ -232,6 +232,9 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
                             }
                         }
                         break;
+                    case $data.storageProviders.DbCreationType.AssumeUnchanged:
+                        // do nothing
+                        break;
                 }
                 that._runSqlCommands(sqlConnection, { success: callBack.success, error: callBack.error });
             },

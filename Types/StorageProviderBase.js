@@ -5,7 +5,8 @@ $data.storageProviders = {
         DropTableIfChange: 20,
         DropAllExistingTables: 30,
         ErrorIfChange: 40,
-        DropDbIfChange: 50
+        DropDbIfChange: 50,
+        AssumeUnchanged: 90
     }
 }
 
