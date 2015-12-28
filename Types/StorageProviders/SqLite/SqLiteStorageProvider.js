@@ -180,6 +180,13 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
 
     initializeStore: function (callBack) {
         callBack = $data.typeSystem.createCallbackSetting(callBack);
+        
+        // if assuming no changes, do absolutely NOTHING and succeed
+        if (this.providerConfiguration.dbCreation === $data.storageProviders.DbCreationType.AssumeUnchanged) {
+            callBack.success(this.context);
+            return;
+        }
+        
         this.context._storageModel.forEach(function (item, index) {
             this.SqlCommands.push(this.createSqlFromStorageModel(item) + " ");
         }, this);
@@ -231,9 +238,6 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
                                 that.SqlCommands.push("DROP TABLE IF EXISTS [" + existObjectInDB[objName].tbl_name + "];");
                             }
                         }
-                        break;
-                    case $data.storageProviders.DbCreationType.AssumeUnchanged:
-                        // do nothing
                         break;
                 }
                 that._runSqlCommands(sqlConnection, { success: callBack.success, error: callBack.error });
