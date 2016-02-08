@@ -705,8 +705,6 @@ $data.Class.define('$data.storageProviders.sqLite.SqLiteStorageProvider', $data.
     }
 });
 
-if ($data.storageProviders.sqLite.SqLiteStorageProvider.isSupported) {
-    $data.StorageProviderBase.registerProvider("webSql", $data.storageProviders.sqLite.SqLiteStorageProvider);
-    $data.StorageProviderBase.registerProvider("sqLite", $data.storageProviders.sqLite.SqLiteStorageProvider);
-    $data.webSqlProvider = $data.storageProviders.sqLite.SqLiteStorageProvider;
-}
+$data.StorageProviderBase.registerProvider("webSql", $data.storageProviders.sqLite.SqLiteStorageProvider);
+$data.StorageProviderBase.registerProvider("sqLite", $data.storageProviders.sqLite.SqLiteStorageProvider);
+$data.webSqlProvider = $data.storageProviders.sqLite.SqLiteStorageProvider;

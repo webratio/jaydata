@@ -99,7 +99,7 @@ $data.Class.define('$data.StorageProviderLoaderBase', null, null, {
         if ($data.RegisteredStorageProviders) {
             $data.Trace.log('Is the ' + currentProvider + ' provider already registered?');
             var provider = $data.RegisteredStorageProviders[currentProvider];
-            if (provider) {
+            if (provider && provider.isSupported) {
                 $data.Trace.log(currentProvider + ' provider registered');
                 callback.success(provider)
                 return;
