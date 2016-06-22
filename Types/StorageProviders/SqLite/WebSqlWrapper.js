@@ -1,5 +1,6 @@
 (function() {
     var GLOBAL = this;
+    var INSTRUMENTED = "__instrumented_" + Math.random();
     
     if (!!GLOBAL.cordova && GLOBAL.navigator.userAgent.indexOf("Windows Phone ") >= 0) {
         GLOBAL.document.addEventListener("deviceready", installWrapper);
@@ -41,6 +42,13 @@
         
         function openDatabase(dbName) {
             var db = _openDatabase.apply(this, arguments);
+            
+            if (db[INSTRUMENTED] === true) {
+                return db;
+            }
+            Object.defineProperty(db, INSTRUMENTED, {
+                value: true
+            });
             
             var dbContext = retrieveDbContext(dbName);
             
