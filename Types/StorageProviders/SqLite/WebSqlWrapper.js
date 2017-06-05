@@ -2,7 +2,7 @@
     var GLOBAL = this;
     var INSTRUMENTED = "__instrumented_" + Math.random();
     
-    if (!!GLOBAL.cordova && GLOBAL.navigator.userAgent.indexOf("Windows Phone ") >= 0) {
+    if (!!GLOBAL.cordova && (GLOBAL.navigator.userAgent.indexOf(" Edge/") >= 0 || GLOBAL.navigator.userAgent.indexOf("Windows Phone ") >= 0)) {
         GLOBAL.document.addEventListener("deviceready", installWrapper);
     } else {
         installWrapper();
